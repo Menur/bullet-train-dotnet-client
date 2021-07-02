@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -122,7 +122,7 @@ namespace BulletTrain
                 string url = GetIdentitiesUrl(identity);
                 string json = await GetJSON(HttpMethod.Get, url);
 
-                List<Trait> traits = JsonConvert.DeserializeObject<Identity>(json).traits;
+                List<Trait> traits = JsonConvert.DeserializeObject<Identity>(json)?.traits;
                 if (keys == null)
                 {
                     return traits;
@@ -260,7 +260,7 @@ namespace BulletTrain
         {
             try
             {
-                string url = GetIdentitiesUrl(identity); 
+                string url = GetIdentitiesUrl(identity);
                 string json = await GetJSON(HttpMethod.Get, url);
 
                 return JsonConvert.DeserializeObject<Identity>(json);
@@ -289,13 +289,15 @@ namespace BulletTrain
                 }
                 HttpResponseMessage response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();
-                return await response.Content.ReadAsStringAsync();
+                var data = await response.Content.ReadAsStringAsync();
+                return data ?? string.Empty;
+
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine("\nHTTP Request Exception Caught!");
                 Console.WriteLine("Message :{0} ", e.Message);
-                return null;
+                return string.Empty;
             }
         }
 
