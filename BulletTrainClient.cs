@@ -60,6 +60,11 @@ namespace BulletTrain
             try
             {
                 string json = await GetJSON(HttpMethod.Get, url);
+                if (json == null)
+                {
+                    Console.WriteLine("\nBullet Train failed to respond.");
+                    return null;
+                }
 
                 if (identity == null)
                 {
@@ -121,6 +126,11 @@ namespace BulletTrain
             {
                 string url = GetIdentitiesUrl(identity);
                 string json = await GetJSON(HttpMethod.Get, url);
+                if (json == null)
+                {
+                    Console.WriteLine("\nBullet Train failed to respond.");
+                    return null;
+                }
 
                 List<Trait> traits = JsonConvert.DeserializeObject<Identity>(json).traits;
                 if (keys == null)
@@ -215,6 +225,11 @@ namespace BulletTrain
 
                 string url = configuration.ApiUrl.AppendPath("traits");
                 string json = await GetJSON(HttpMethod.Post, url, JsonConvert.SerializeObject(new { identity = new { identifier = identity }, trait_key = key, trait_value = value }));
+                if (json == null)
+                {
+                    Console.WriteLine("\nBullet Train failed to respond.");
+                    return null;
+                }
 
                 return JsonConvert.DeserializeObject<Trait>(json);
             }
@@ -242,6 +257,11 @@ namespace BulletTrain
                 string url = configuration.ApiUrl.AppendPath("traits", "increment-value");
                 string json = await GetJSON(HttpMethod.Post, url,
                     JsonConvert.SerializeObject(new { identifier = identity, trait_key = key, increment_by = incrementBy }));
+                if (json == null)
+                {
+                    Console.WriteLine("\nBullet Train failed to respond.");
+                    return null;
+                }
 
                 return JsonConvert.DeserializeObject<Trait>(json);
             }
@@ -262,6 +282,11 @@ namespace BulletTrain
             {
                 string url = GetIdentitiesUrl(identity); 
                 string json = await GetJSON(HttpMethod.Get, url);
+                if (json == null)
+                {
+                    Console.WriteLine("\nBullet Train failed to respond.");
+                    return null;
+                }
 
                 return JsonConvert.DeserializeObject<Identity>(json);
             }
